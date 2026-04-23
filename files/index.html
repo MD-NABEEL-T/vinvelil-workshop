@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>விண்வெளில் ஒரு பயணம் — IARRD Astronomy Workshop</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;600&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body class="page-landing">
+
+  <!-- Star canvas background -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Sunlight ray -->
+  <div class="sun-ray"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo-area">
+      <div class="logo-placeholder">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">IARRD</span>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <main class="hero">
+    <!-- Earth (Three.js WebGL) -->
+    <div class="earth-wrap">
+      <div class="earth-glow"></div>
+      <div id="earth-3d"></div>
+      <!-- legacy canvas/divs hidden by CSS -->
+      <canvas id="earth-canvas" style="display:none"></canvas>
+    </div>
+
+    <!-- Text content -->
+    <div class="hero-content">
+      <p class="event-label">IARRD PRESENTS</p>
+
+      <h1 class="tamil-title">விண்வெளில் ஒரு பயணம்</h1>
+      <p class="subtitle-en">ASTRONOMY WORKSHOP</p>
+      <p class="tagline">Explore. Learn. Inspire.</p>
+
+      <!-- Countdown -->
+      <div class="countdown-wrap">
+        <div class="countdown-box" id="cd-days">
+          <span class="cd-num">00</span>
+          <span class="cd-label">Days</span>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="countdown-box" id="cd-hours">
+          <span class="cd-num">00</span>
+          <span class="cd-label">Hours</span>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="countdown-box" id="cd-mins">
+          <span class="cd-num">00</span>
+          <span class="cd-label">Minutes</span>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="countdown-box" id="cd-secs">
+          <span class="cd-num">00</span>
+          <span class="cd-label">Seconds</span>
+        </div>
+      </div>
+
+      <!-- Event info -->
+      <div class="event-info-row">
+        <div class="event-info-item">
+          <span class="ei-icon">📅</span>
+          <span>May 2, 2026</span>
+        </div>
+        <div class="ei-divider"></div>
+        <div class="event-info-item">
+          <span class="ei-icon">🕒</span>
+          <span>06:00 PM</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <a href="form.html" class="cta-btn">
+        REGISTER NOW <span class="cta-arrow">→</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 IARRD. All rights reserved.</p>
+      <div class="footer-links" id="about">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

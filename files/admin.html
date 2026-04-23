@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — விண்வெளில் ஒரு பயணம்</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="page-admin">
+
+  <canvas id="starfield"></canvas>
+
+  <!-- Login Screen -->
+  <div class="admin-login" id="admin-login">
+    <div class="admin-card">
+      <p class="form-event-label">IARRD · ADMIN PANEL</p>
+      <h2 class="form-title-tamil" style="font-size:1.4rem;margin-bottom:1.5rem;">Registrations Dashboard</h2>
+      <div class="field-group">
+        <label for="admin-pass">Admin Password</label>
+        <input type="password" id="admin-pass" placeholder="Enter password" />
+      </div>
+      <div id="login-error" class="submit-error" style="display:none; margin-bottom:1rem;">
+        ⚠️ Incorrect password. Try again.
+      </div>
+      <button class="btn-submit" id="admin-login-btn" style="width:100%">Login →</button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="admin-dashboard" id="admin-dashboard" style="display:none">
+
+    <div class="admin-topbar">
+      <div class="logo-area" style="padding:0">
+        <div class="logo-placeholder">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">IARRD Admin</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:center">
+        <span class="event-label" style="font-size:.7rem">விண்வெளில் ஒரு பயணம்</span>
+        <button class="btn-back" id="admin-logout">Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div class="admin-toolbar">
+        <div class="admin-stats" id="admin-stats">
+          <div class="stat-box"><span class="stat-num" id="stat-total">—</span><span class="stat-label">Total</span>
+          </div>
+          <div class="stat-box"><span class="stat-num" id="stat-school">—</span><span class="stat-label">School</span>
+          </div>
+          <div class="stat-box"><span class="stat-num" id="stat-college">—</span><span class="stat-label">College</span>
+          </div>
+          <div class="stat-box"><span class="stat-num" id="stat-pro">—</span><span
+              class="stat-label">Professional</span></div>
+          <div class="stat-box"><span class="stat-num" id="stat-enth">—</span><span class="stat-label">Enthusiast</span>
+          </div>
+        </div>
+        <div class="admin-filter-wrap">
+          <label for="cat-filter">Filter by:</label>
+          <select id="cat-filter">
+            <option value="all">All Categories</option>
+            <option value="school">School Student</option>
+            <option value="college">College Student</option>
+            <option value="professional">Working Professional</option>
+            <option value="enthusiast">Enthusiast</option>
+          </select>
+          <button class="btn-next" id="refresh-btn" style="padding:.5rem 1.2rem">↻ Refresh</button>
+        </div>
+      </div>
+
+      <!-- Debug box: shows raw column names from Sheet when data loads -->
+      <div id="admin-debug" style="display:none; margin-bottom:1rem; padding:.9rem 1.2rem;
+        background:rgba(212,168,83,.08); border:1px solid rgba(212,168,83,.25);
+        border-radius:10px; font-size:.78rem; color:var(--text-muted); line-height:1.8;">
+      </div>
+
+      <div class="admin-table-wrap">
+        <div id="admin-loading" style="text-align:center;padding:3rem;color:var(--text-muted)">
+          <div class="spinner" style="margin:0 auto 1rem"></div>
+          Loading registrations…
+        </div>
+        <table class="admin-table" id="admin-table" style="display:none">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Category</th>
+              <th>Details</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+        <div id="admin-empty" style="display:none;text-align:center;padding:3rem;color:var(--text-muted)">
+          No registrations found.
+        </div>
+        <div id="admin-fetch-error" class="submit-error"
+          style="display:none;margin:2rem auto;max-width:400px;text-align:center">
+          ⚠️ Failed to fetch data. Check your Google Script URL in script.js.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

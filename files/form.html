@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — விண்வெளில் ஒரு பயணம்</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body class="page-form">
+
+  <canvas id="starfield"></canvas>
+
+  <!-- Back to home -->
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <div class="form-container">
+
+    <!-- Form header -->
+    <div class="form-header">
+      <p class="form-event-label">IARRD · ASTRONOMY WORKSHOP</p>
+      <h2 class="form-title-tamil">விண்வெளில் ஒரு பயணம்</h2>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="progress-step active" data-step="1"><span>1</span><p>Category</p></div>
+        <div class="progress-step" data-step="2"><span>2</span><p>Details</p></div>
+        <div class="progress-step" data-step="3"><span>3</span><p>Info</p></div>
+        <div class="progress-step" data-step="4"><span>4</span><p>Review</p></div>
+      </div>
+    </div>
+
+    <!-- ───────── STEP 1 ───────── -->
+    <div class="form-step active" id="step-1">
+      <h3 class="step-title">What suits you?</h3>
+      <p class="step-sub">Select your category to continue</p>
+      <div class="category-grid">
+        <button class="cat-card" data-cat="school">
+          <span class="cat-icon">🏫</span>
+          <span class="cat-label">School Student</span>
+        </button>
+        <button class="cat-card" data-cat="college">
+          <span class="cat-icon">🎓</span>
+          <span class="cat-label">College Student</span>
+        </button>
+        <button class="cat-card" data-cat="professional">
+          <span class="cat-icon">💼</span>
+          <span class="cat-label">Working Professional</span>
+        </button>
+        <button class="cat-card" data-cat="enthusiast">
+          <span class="cat-icon">🔭</span>
+          <span class="cat-label">Enthusiast</span>
+        </button>
+      </div>
+      <div class="step-nav">
+        <span></span>
+        <button class="btn-next" id="next-1" disabled>Next →</button>
+      </div>
+    </div>
+
+    <!-- ───────── STEP 2 ───────── -->
+    <div class="form-step" id="step-2">
+      <h3 class="step-title">Basic Details</h3>
+      <p class="step-sub">Tell us a little about yourself</p>
+      <div class="field-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Your full name" />
+      </div>
+      <div class="field-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" />
+      </div>
+      <div class="field-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+91 00000 00000" />
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" id="back-2">← Back</button>
+        <button class="btn-next" id="next-2">Next →</button>
+      </div>
+    </div>
+
+    <!-- ───────── STEP 3 ───────── -->
+    <div class="form-step" id="step-3">
+      <h3 class="step-title" id="step3-title">Additional Info</h3>
+      <p class="step-sub" id="step3-sub">A few more details based on your category</p>
+
+      <!-- School fields -->
+      <div class="dynamic-fields" id="fields-school">
+        <div class="field-group">
+          <label for="school-name">School Name</label>
+          <input type="text" id="school-name" placeholder="Your school name" />
+        </div>
+        <div class="field-group">
+          <label for="standard">Standard / Grade</label>
+          <input type="text" id="standard" placeholder="e.g. 11th Standard" />
+        </div>
+      </div>
+
+      <!-- College fields -->
+      <div class="dynamic-fields" id="fields-college">
+        <div class="field-group">
+          <label for="college-name">College Name</label>
+          <input type="text" id="college-name" placeholder="Your college name" />
+        </div>
+        <div class="field-group">
+          <label for="department">Department</label>
+          <input type="text" id="department" placeholder="e.g. Physics, CS" />
+        </div>
+        <div class="field-group">
+          <label for="year">Year of Study</label>
+          <select id="year">
+            <option value="">Select year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+            <option>PG / Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Professional fields -->
+      <div class="dynamic-fields" id="fields-professional">
+        <div class="field-group">
+          <label for="company">Company Name</label>
+          <input type="text" id="company" placeholder="Your company" />
+        </div>
+        <div class="field-group">
+          <label for="role">Your Role</label>
+          <input type="text" id="role" placeholder="e.g. Software Engineer" />
+        </div>
+      </div>
+
+      <!-- Enthusiast fields -->
+      <div class="dynamic-fields" id="fields-enthusiast">
+        <div class="field-group">
+          <label for="describe">What describes you well?</label>
+          <textarea id="describe" rows="4" placeholder="Tell us about your interest in astronomy..."></textarea>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" id="back-3">← Back</button>
+        <button class="btn-next" id="next-3">Next →</button>
+      </div>
+    </div>
+
+    <!-- ───────── STEP 4 ───────── -->
+    <div class="form-step" id="step-4">
+      <h3 class="step-title">Review & Submit</h3>
+      <p class="step-sub">Please verify your details before submitting</p>
+
+      <div class="review-card" id="review-card">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="submit-note">
+        By registering you agree to our event terms. A confirmation will be sent to your email.
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" id="back-4">← Back</button>
+        <button class="btn-submit" id="submit-btn">Submit Registration ✦</button>
+      </div>
+
+      <!-- Spinner -->
+      <div class="submit-spinner" id="submit-spinner" style="display:none">
+        <div class="spinner"></div>
+        <p>Submitting…</p>
+      </div>
+
+      <div class="submit-error" id="submit-error" style="display:none">
+        ⚠️ Submission failed. Please try again.
+      </div>
+    </div>
+
+  </div><!-- /form-container -->
+
+  <script src="script.js"></script>
+</body>
+</html>
