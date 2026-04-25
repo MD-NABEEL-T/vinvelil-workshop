@@ -104,23 +104,15 @@ body {
   gap: .8rem;
 }
 
-.logo-placeholder {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: .95rem;
-  letter-spacing: .18em;
-  color: var(--accent);
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
-.logo-icon {
-  font-size: 1.1rem;
-}
-
-.logo-text {
-  color: var(--text);
+.logo-area:hover .logo-img {
+  transform: scale(1.05);
 }
 
 .site-nav {
@@ -417,6 +409,626 @@ body {
 
 .footer-links a:hover {
   color: var(--text-muted);
+}
+
+/* ── About Section ── */
+.about-section {
+  position: relative;
+  z-index: 2;
+  padding: 5rem 2rem;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  border-top: 1px solid var(--border);
+}
+
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.02em;
+}
+
+.subsection-title {
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.2rem;
+}
+
+.about-intro {
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.8;
+  text-align: center;
+  margin-bottom: 4.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-intro p {
+  margin-bottom: 1.2rem;
+}
+
+.about-intro p:last-child {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+/* Topics Grid */
+.about-topics {
+  margin-bottom: 5rem;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.topic-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 2rem 1.75rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.topic-card:hover {
+  transform: scale(1.02);
+  border-color: rgba(212, 168, 83, 0.28);
+  box-shadow: 0 0 24px rgba(212, 168, 83, 0.08), 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Scroll Reveal */
+.topic-card.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.topic-card.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.topic-card.reveal.active:hover {
+  transform: scale(1.02);
+}
+
+.topic-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.topic-card h4 {
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.topic-card p {
+  font-size: 0.88rem;
+  color: #9aa4b2;
+  line-height: 1.65;
+}
+
+/* Speaker & IARRD */
+.about-speaker-iarrd {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.info-card:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+}
+
+.speaker-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.speaker-title {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+}
+
+.speaker-desc,
+.iarrd-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Responsive Overrides */
+@media (max-width: 900px) {
+  .topics-grid {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .topics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .about-speaker-iarrd {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-intro {
+    font-size: 0.95rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .topic-card h4 {
+    font-size: 1rem;
+  }
+
+  .topic-card {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* ══════════════════════════════
+   CONTACT SECTION
+══════════════════════════════ */
+
+.contact-section {
+  position: relative;
+  z-index: 2;
+  padding: 5rem 2rem 5.5rem;
+  background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  border-top: 1px solid var(--border);
+}
+
+.contact-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.contact-subtitle {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* Cards row */
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Individual card */
+.contact-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.contact-card:hover {
+  transform: scale(1.03);
+  border-color: rgba(212, 168, 83, 0.28);
+  box-shadow: 0 0 28px rgba(212, 168, 83, 0.07), 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Scroll reveal reuse */
+.contact-card.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-card.reveal.active:hover {
+  transform: scale(1.03);
+}
+
+.contact-card-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.contact-card-title {
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.contact-card-sub {
+  font-size: 0.88rem;
+  color: #9aa4b2;
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+
+/* Email link */
+.contact-link {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  color: var(--accent2);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s;
+}
+
+.contact-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* WhatsApp button */
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding: 0.6rem 1.4rem;
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  border-radius: 8px;
+  color: #4ddf8a;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.contact-btn:hover {
+  background: rgba(37, 211, 102, 0.22);
+  border-color: rgba(37, 211, 102, 0.55);
+  color: #6ff0a0;
+}
+
+/* Social links */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 0.4rem;
+  width: 100%;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.social-link svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.social-link:hover {
+  color: var(--text);
+}
+
+.social-link:hover svg {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contact-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-cards .contact-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .contact-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-cards .contact-card:last-child {
+    grid-column: auto;
+  }
+
+  .contact-header {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   PRIVACY POLICY PAGE
+══════════════════════════════ */
+
+.page-privacy {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.privacy-main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  padding: 8rem 2rem 5rem;
+}
+
+.privacy-container {
+  max-width: 850px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem 4rem;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+}
+
+.privacy-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.privacy-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.privacy-title-tamil {
+  font-family: var(--font-tamil);
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.privacy-date {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.privacy-block {
+  margin-bottom: 2.5rem;
+}
+
+.privacy-block p {
+  font-size: 1.05rem;
+  color: #e6edf3;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.privacy-heading {
+  font-family: var(--font-ui);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.03em;
+}
+
+.privacy-list {
+  list-style: none;
+  padding-left: 0.5rem;
+}
+
+.privacy-list li {
+  position: relative;
+  font-size: 1rem;
+  color: #e6edf3;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  padding-left: 1.5rem;
+}
+
+.privacy-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.privacy-highlight {
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.privacy-contact-email {
+  margin-top: 1rem;
+}
+
+.privacy-email-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.privacy-email-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.privacy-divider {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 2.5rem 0;
+}
+
+.privacy-footer-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.privacy-footer-note p {
+  margin-bottom: 1.5rem;
+}
+
+.privacy-back-btn {
+  display: inline-flex;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.privacy-back-btn:hover {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Privacy Consent in Form */
+.privacy-consent {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--surface2);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.privacy-check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.privacy-check-label input[type="checkbox"] {
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+}
+
+.privacy-policy-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.privacy-policy-link:hover {
+  text-decoration: underline;
+}
+
+/* Privacy Page Responsiveness */
+@media (max-width: 768px) {
+  .privacy-container {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .privacy-title {
+    font-size: 2.2rem;
+  }
+
+  .privacy-block p, .privacy-list li {
+    font-size: 0.95rem;
+  }
 }
 
 /* ══════════════════════════════

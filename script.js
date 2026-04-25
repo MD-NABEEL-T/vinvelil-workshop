@@ -246,6 +246,21 @@ if (document.querySelector(".page-landing")) {
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Scroll reveal for About and Contact section cards
+  const revealObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { root: null, rootMargin: "0px", threshold: 0.12 });
+
+  document.querySelectorAll(".topic-card.reveal, .contact-card.reveal").forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.08}s`;
+    revealObserver.observe(card);
+  });
 }
 
 /* ═══════════════════════════════════════
