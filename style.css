@@ -1026,7 +1026,8 @@ body {
     font-size: 2.2rem;
   }
 
-  .privacy-block p, .privacy-list li {
+  .privacy-block p,
+  .privacy-list li {
     font-size: 0.95rem;
   }
 }
@@ -1791,4 +1792,14 @@ body {
   .admin-toolbar {
     flex-direction: column;
   }
+}
+
+.field-group select option {
+  background: #0d1424;
+  color: var(--text);
+}
+
+.field-group select:focus option:checked {
+  background: var(--accent);
+  color: #080c14;
 }
