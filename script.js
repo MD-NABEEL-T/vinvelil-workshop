@@ -4,7 +4,7 @@
  *
  * ⚙️  CONFIGURE YOUR GOOGLE APPS SCRIPT URL HERE:
  */
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_gIm_Y8EtbDY4idWsTgeEJKyNKNN75NAeAD2DR5Ch7HqOtRCl_Sju6rtTB5KoFX77/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxH8aOXT-aWYA0wR6TamjtOShGKF5oD_VcjGuqJ2n7z6lcrVbgaQjI15fAtHAK_fyec/exec";
 const ADMIN_PASSWORD = "iarrdadmin2026";
 
 /* ═══════════════════════════════════════
