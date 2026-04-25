@@ -1803,3 +1803,11 @@ body {
   background: var(--accent);
   color: #080c14;
 }
+
+.privacy-consent {
+  transition: outline 0.2s;
+}
+
+.privacy-check-label input[type="checkbox"]:required {
+  outline: 2px solid #e87878;
+}

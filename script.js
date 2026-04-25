@@ -63,11 +63,9 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   const container = document.getElementById("earth-3d");
   if (!container || typeof THREE === "undefined") return;
 
-  // Size matches CSS .earth-wrap (responsive, capped at 560px)
   const size = Math.min(container.parentElement.offsetWidth || 560, 560);
   const W = size, H = size;
 
-  // ── Renderer — transparent background so space shows through ──
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(W, H);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -75,23 +73,19 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   renderer.toneMappingExposure = 1.0;
   container.appendChild(renderer.domElement);
 
-  // ── Resize handler ──
   window.addEventListener("resize", () => {
     const s = Math.min(container.parentElement.offsetWidth || 560, 560);
     renderer.setSize(s, s);
   });
 
-  // ── Scene & Camera ──
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
   camera.position.set(0, 0, 2.55);
 
-  // ── Textures — all from reliable three.js r128 CDN ──
   const loader = new THREE.TextureLoader();
   loader.crossOrigin = "anonymous";
   const BASE = "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/";
 
-  // ── Earth sphere with day texture, bump, specular ──
   const earthGeo = new THREE.SphereGeometry(1, 72, 72);
   const earthMat = new THREE.MeshPhongMaterial({
     map: loader.load(BASE + "earth_atmos_2048.jpg"),
@@ -104,7 +98,6 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   const earth = new THREE.Mesh(earthGeo, earthMat);
   scene.add(earth);
 
-  // ── Cloud layer — slightly larger sphere on top ──
   const cloudMat = new THREE.MeshPhongMaterial({
     map: loader.load(BASE + "earth_clouds_2048.png"),
     transparent: true,
@@ -114,13 +107,9 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.009, 72, 72), cloudMat);
   scene.add(clouds);
 
-  // ── City lights on night side (additive blend) ──
-  // Using a reliable mirrored source
   const nightTex = loader.load(
     "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/earth_atmos_2048.jpg",
-    // fallback: same texture, night overlay logic handled via opacity
   );
-  // Try a better night lights source
   const nightLoader = new THREE.TextureLoader();
   nightLoader.crossOrigin = "anonymous";
   const nightMat = new THREE.MeshBasicMaterial({
@@ -134,7 +123,6 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
     (tex) => { nightMat.map = tex; nightMat.needsUpdate = true; },
     undefined,
     () => {
-      // fallback: use a procedural warm tint for city lights
       nightMat.color = new THREE.Color(0xffcc44);
       nightMat.needsUpdate = true;
     }
@@ -142,7 +130,6 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   const nightMesh = new THREE.Mesh(new THREE.SphereGeometry(1.002, 72, 72), nightMat);
   scene.add(nightMesh);
 
-  // ── Atmosphere halo — thin blue rim (BackSide shell) ──
   const atmoMat = new THREE.MeshPhongMaterial({
     color: 0x1177ff,
     transparent: true,
@@ -152,7 +139,6 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   });
   scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.055, 64, 64), atmoMat));
 
-  // Outer soft glow
   const outerMat = new THREE.MeshPhongMaterial({
     color: 0x0044cc,
     transparent: true,
@@ -162,30 +148,23 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
   });
   scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.13, 64, 64), outerMat));
 
-  // ── Lighting ──
-  // Primary sun — upper right, warm white, strong (matches reference screenshot)
   const sun = new THREE.DirectionalLight(0xfff5e0, 2.8);
   sun.position.set(4.0, 2.2, 2.5);
   scene.add(sun);
 
-  // Soft rim from sun — gives the bright edge crescent visible in reference
   const sunRim = new THREE.DirectionalLight(0xffeedd, 0.6);
   sunRim.position.set(4.5, 2.8, 1.5);
   scene.add(sunRim);
 
-  // Deep space ambient — almost nothing, keeps night side barely visible
   scene.add(new THREE.AmbientLight(0x04080f, 1.5));
 
-  // ── Axial tilt ~~
   const TILT = THREE.MathUtils.degToRad(23.5);
   [earth, clouds, nightMesh].forEach(m => m.rotation.z = TILT);
 
-  // Start facing Middle East / India / Africa like reference image
   earth.rotation.y = THREE.MathUtils.degToRad(35);
   nightMesh.rotation.y = earth.rotation.y;
   clouds.rotation.y = earth.rotation.y + 0.08;
 
-  // ── Animation ──
   const EARTH_RPM = 0.00075;
   const CLOUD_RPM = 0.00115;
 
@@ -196,10 +175,7 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
     clouds.rotation.y += CLOUD_RPM;
     nightMesh.rotation.y = earth.rotation.y;
 
-    // City lights opacity: appear when facing away from sun
-    // Sun is at +X,+Y → night side faces -X,+Z
     const angle = earth.rotation.y;
-    // sinusoidal: peaks when earth's night hemisphere faces camera
     const nightIntensity = Math.max(0, -Math.cos(angle + 0.6));
     nightMat.opacity = nightIntensity * 0.65;
 
@@ -213,13 +189,11 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
 ═══════════════════════════════════════ */
 if (document.querySelector(".page-landing")) {
 
-  // Header scroll state
   const header = document.querySelector(".site-header");
   window.addEventListener("scroll", () => {
     header.classList.toggle("scrolled", window.scrollY > 40);
   });
 
-  // Countdown to May 2, 2026 18:00 local time
   const TARGET = new Date("2026-05-02T18:00:00");
 
   function updateCountdown() {
@@ -247,7 +221,6 @@ if (document.querySelector(".page-landing")) {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // Scroll reveal for About and Contact section cards
   const revealObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -268,13 +241,11 @@ if (document.querySelector(".page-landing")) {
 ═══════════════════════════════════════ */
 if (document.querySelector(".page-form")) {
 
-  // ── State ──
   const formData = {
     category: "",
     name: "",
     email: "",
     phone: "",
-    // dynamic
     schoolName: "",
     standard: "",
     collegeName: "",
@@ -289,12 +260,10 @@ if (document.querySelector(".page-form")) {
   let currentStep = 1;
   const TOTAL = 4;
 
-  // ── DOM refs ──
   const steps = document.querySelectorAll(".form-step");
   const progSteps = document.querySelectorAll(".progress-step");
   const progressFill = document.getElementById("progressFill");
 
-  // ── Helpers ──
   function showStep(n) {
     steps.forEach(s => s.classList.remove("active"));
     document.getElementById(`step-${n}`).classList.add("active");
@@ -312,7 +281,6 @@ if (document.querySelector(".page-form")) {
 
   function val(id) { return (document.getElementById(id)?.value || "").trim(); }
 
-  // ── Step 1: category selection ──
   const catCards = document.querySelectorAll(".cat-card");
   const next1 = document.getElementById("next-1");
 
@@ -327,7 +295,6 @@ if (document.querySelector(".page-form")) {
 
   next1.addEventListener("click", () => showStep(2));
 
-  // ── Step 2: basic details ──
   document.getElementById("next-2").addEventListener("click", () => {
     const name = val("name");
     const email = val("email");
@@ -341,7 +308,6 @@ if (document.querySelector(".page-form")) {
     formData.email = email;
     formData.phone = phone;
 
-    // Show dynamic fields for step 3
     document.querySelectorAll(".dynamic-fields").forEach(f => f.classList.remove("active"));
     document.getElementById(`fields-${formData.category}`)?.classList.add("active");
 
@@ -358,7 +324,6 @@ if (document.querySelector(".page-form")) {
 
   document.getElementById("back-2").addEventListener("click", () => showStep(1));
 
-  // ── Step 3: dynamic details ──
   document.getElementById("next-3").addEventListener("click", () => {
     const cat = formData.category;
 
@@ -386,7 +351,6 @@ if (document.querySelector(".page-form")) {
   document.getElementById("back-3").addEventListener("click", () => showStep(2));
   document.getElementById("back-4").addEventListener("click", () => showStep(3));
 
-  // ── Build review card ──
   function buildReview() {
     const cat = formData.category;
     const catLabels = {
@@ -424,6 +388,23 @@ if (document.querySelector(".page-form")) {
 
   // ── Submit ──
   document.getElementById("submit-btn").addEventListener("click", async () => {
+
+    // ── Privacy checkbox validation ──
+    const privacyCheck = document.getElementById("privacy-agree");
+    if (!privacyCheck || !privacyCheck.checked) {
+      const consentBox = privacyCheck?.closest(".privacy-consent");
+      if (consentBox) {
+        consentBox.style.outline = "1px solid #e87878";
+        consentBox.style.borderColor = "#e87878";
+        consentBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => {
+          consentBox.style.outline = "";
+          consentBox.style.borderColor = "";
+        }, 2000);
+      }
+      return;
+    }
+
     formData.timestamp = new Date().toISOString();
 
     const spinner = document.getElementById("submit-spinner");
@@ -434,7 +415,6 @@ if (document.querySelector(".page-form")) {
     spinner.style.display = "block";
     errEl.style.display = "none";
 
-    // If no URL is configured, skip the actual fetch
     if (GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_URL") {
       await fakeDelay(1200);
       window.location.href = "success.html";
@@ -442,13 +422,11 @@ if (document.querySelector(".page-form")) {
     }
 
     try {
-      // ── STRICT VALIDATION ──
       const allowedCategories = ["school", "college", "professional", "enthusiast"];
       if (!allowedCategories.includes(formData.category)) {
         throw new Error("Invalid category: " + formData.category);
       }
 
-      // ── STRICT MAPPING TO SHEET COLUMNS ──
       const submission = {
         name: formData.name,
         email: formData.email,
@@ -478,7 +456,6 @@ if (document.querySelector(".page-form")) {
     }
   });
 
-  // ── Shake animation for validation ──
   function shake(id) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -516,7 +493,6 @@ if (document.querySelector(".page-admin")) {
 
   let allData = [];
 
-  // ── Login ──
   function attemptLogin() {
     if (passInput.value === ADMIN_PASSWORD) {
       loginEl.style.display = "none";
@@ -536,10 +512,7 @@ if (document.querySelector(".page-admin")) {
     passInput.value = "";
   });
 
-  // ── Case-insensitive key lookup helper ──
-  // Finds a value in object r by trying key variants (case-insensitive + trimmed)
   function getField(r, ...keys) {
-    // Build a lowercase map of all keys in r
     const lowerMap = {};
     for (const k of Object.keys(r)) {
       lowerMap[k.toLowerCase().trim()] = r[k];
@@ -551,7 +524,6 @@ if (document.querySelector(".page-admin")) {
     return "";
   }
 
-  // ── Normalize every row from Google Sheet ──
   function normalizeRow(r) {
     if (!normalizeRow._logged) {
       console.log("📋 Raw keys:", Object.keys(r));
@@ -559,18 +531,15 @@ if (document.querySelector(".page-admin")) {
       normalizeRow._logged = true;
     }
 
-    // Strict lowercase map for exact match
     const m = {};
     for (const k of Object.keys(r)) {
       m[k.toLowerCase().trim()] = String(r[k] || "").trim();
     }
 
-    // Extract exactly the strict keys
     const name = m["name"] || "";
     const email = m["email"] || "";
     const phone = m["phone"] || "";
 
-    // Category mapping & normalization
     let rawCat = (m["category"] || "").toLowerCase();
     let cat = "";
     if (rawCat === "school") cat = "school";
@@ -595,8 +564,6 @@ if (document.querySelector(".page-admin")) {
     };
   }
 
-
-  // ── Load data ──
   async function loadData() {
     const loading = document.getElementById("admin-loading");
     const table = document.getElementById("admin-table");
@@ -610,7 +577,6 @@ if (document.querySelector(".page-admin")) {
     fetchErr.style.display = "none";
     if (debugBox) debugBox.style.display = "none";
 
-    // Reset logged flag so new fetch logs fresh keys
     normalizeRow._logged = false;
 
     try {
@@ -618,7 +584,6 @@ if (document.querySelector(".page-admin")) {
       const json = await res.json();
       const raw = Array.isArray(json) ? json : (json.data || []);
 
-      // Show raw key names in debug box so admin can verify
       if (raw.length > 0 && debugBox) {
         const keys = Object.keys(raw[0]);
         debugBox.style.display = "block";
@@ -638,7 +603,6 @@ if (document.querySelector(".page-admin")) {
     }
   }
 
-  // ── Render table ──
   function renderTable(data) {
     const loading = document.getElementById("admin-loading");
     const table = document.getElementById("admin-table");
@@ -677,7 +641,6 @@ if (document.querySelector(".page-admin")) {
         ? new Date(row.timestamp).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" })
         : "—";
 
-      // If category wasn't recognized, show the raw value in orange so admin can debug
       const knownCats = ["school", "college", "professional", "enthusiast"];
       const catDisplay = knownCats.includes(cat)
         ? `<span class="cat-badge ${badgeClass[cat]}">${catLabels[cat]}</span>`
@@ -702,7 +665,6 @@ if (document.querySelector(".page-admin")) {
   function buildDetailStr(row) {
     const cat = row.category;
     if (cat === "school") {
-      // No separate school name column in sheet yet — show grade only
       const parts = [row.schoolName, row.standard].filter(Boolean);
       return parts.length ? parts.map(esc).join(" · ") : "—";
     }
@@ -737,7 +699,6 @@ if (document.querySelector(".page-admin")) {
       .replace(/"/g, "&quot;");
   }
 
-  // ── Filter — works on already-normalized allData ──
   catFilter.addEventListener("change", () => {
     const f = catFilter.value;
     const filtered = f === "all" ? allData : allData.filter(r => r.category === f);
