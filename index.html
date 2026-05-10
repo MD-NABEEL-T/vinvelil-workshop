@@ -184,52 +184,86 @@
       margin-bottom: 2.2rem;
     }
 
+    /* ── PREMIUM CTA BUTTON (Upgrade 1) ── */
     .cta-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      padding: 0.9rem 2.2rem;
-      background: linear-gradient(135deg, rgba(245, 200, 66, 0.15) 0%, rgba(245, 200, 66, 0.05) 100%);
-      border: 1px solid rgba(245, 200, 66, 0.5);
+      gap: 0.75rem;
+      padding: 1rem 2.6rem;
+      background: linear-gradient(135deg, rgba(245, 200, 66, 0.18) 0%, rgba(77, 168, 255, 0.08) 100%);
+      border: 1px solid rgba(245, 200, 66, 0.55);
       color: var(--gold);
       text-decoration: none;
       font-family: var(--font-ui);
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      border-radius: 2px;
-      transition: all 0.4s ease;
+      border-radius: 6px;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .cta-btn::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(245, 200, 66, 0.25), transparent);
+      background: linear-gradient(135deg, rgba(245, 200, 66, 0.28) 0%, rgba(77, 168, 255, 0.12) 100%);
       opacity: 0;
-      transition: opacity 0.4s;
+      transition: opacity 0.5s ease;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(245, 200, 66, 0.6), rgba(77, 168, 255, 0.4), rgba(245, 200, 66, 0.6));
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.5s ease;
+      filter: blur(8px);
     }
 
     .cta-btn:hover::before {
       opacity: 1;
     }
 
+    .cta-btn:hover::after {
+      opacity: 1;
+    }
+
     .cta-btn:hover {
-      border-color: rgba(245, 200, 66, 0.9);
-      box-shadow: 0 0 30px rgba(245, 200, 66, 0.25), 0 0 60px rgba(245, 200, 66, 0.1);
-      transform: translateY(-1px);
+      border-color: rgba(245, 200, 66, 0.85);
+      box-shadow: 0 0 24px rgba(245, 200, 66, 0.22), 0 0 48px rgba(245, 200, 66, 0.08), 0 4px 20px rgba(0, 0, 0, 0.4);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+
+    .cta-btn-price {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--gold);
+      transition: color 0.3s;
+    }
+
+    .cta-btn:hover .cta-btn-price {
+      color: #fff;
     }
 
     .cta-arrow {
       font-size: 1.1rem;
-      transition: transform 0.3s;
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     .cta-btn:hover .cta-arrow {
-      transform: translateX(4px);
+      transform: translateX(5px);
     }
 
     /* ── COUNTDOWN ── */
@@ -466,7 +500,7 @@
       color: rgba(77, 168, 255, 0.7);
     }
 
-    /* ── CREW ── */
+    /* ── CREW — Upgrade 3: Interactive Mission Control ── */
     .mission-control-section {
       padding: 6rem 0;
       background: var(--bg-section);
@@ -479,19 +513,108 @@
     }
 
     .crew-card {
-      background: rgba(4, 8, 18, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 4px;
-      padding: 2rem 1.5rem;
+      background: rgba(8, 14, 28, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 2.2rem 1.5rem;
       text-align: center;
-      transition: all 0.4s;
+      transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), background 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .crew-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245, 200, 66, 0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
 
     .crew-card:hover {
-      border-color: rgba(245, 200, 66, 0.25);
-      transform: translateY(-3px);
+      border-color: rgba(245, 200, 66, 0.35);
+      box-shadow: 0 0 30px rgba(245, 200, 66, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
+      transform: translateY(-5px);
+      background: rgba(12, 20, 38, 0.88);
     }
 
+    .crew-card:hover::before {
+      opacity: 1;
+    }
+
+    .crew-avatar-wrap {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(245, 200, 66, 0.2), rgba(77, 168, 255, 0.2));
+      border: 1px solid rgba(245, 200, 66, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      overflow: hidden;
+      position: relative;
+      transition: box-shadow 0.5s ease;
+    }
+
+    .crew-card:hover .crew-avatar-wrap {
+      box-shadow: 0 0 20px rgba(245, 200, 66, 0.2), 0 0 40px rgba(77, 168, 255, 0.1);
+    }
+
+    .crew-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
+      filter: brightness(0.92) saturate(0.9);
+    }
+
+    .crew-card:hover .crew-avatar-wrap img {
+      transform: scale(1.08);
+      filter: brightness(1.05) saturate(1.1);
+    }
+
+    /* LinkedIn hover badge */
+    .crew-linkedin {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(10, 102, 194, 0.88) 0%, transparent 100%);
+      padding: 0.5rem 0 0.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      font-family: var(--font-ui);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .crew-linkedin svg {
+      width: 11px;
+      height: 11px;
+      fill: #fff;
+    }
+
+    .crew-card:hover .crew-linkedin {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Legacy .crew-avatar kept for compat */
     .crew-avatar {
       width: 96px;
       height: 96px;
@@ -518,6 +641,11 @@
       font-weight: 400;
       color: #fff;
       margin-bottom: 0.3rem;
+      transition: color 0.3s ease;
+    }
+
+    .crew-card:hover .crew-name {
+      color: rgba(245, 200, 66, 0.95);
     }
 
     .team-category-title {
@@ -588,21 +716,22 @@
       color: var(--muted);
     }
 
-    /* ── PAYMENT ── */
+    /* ── PAYMENT (Upgrade 1 + 2) ── */
     .payment-section {
       padding: 6rem 0;
       background: var(--bg-deep);
     }
 
     .payment-card {
-      background: rgba(8, 15, 30, 0.85);
-      border: 1px solid rgba(245, 200, 66, 0.2);
-      border-radius: 6px;
+      background: rgba(8, 15, 30, 0.9);
+      border: 1px solid rgba(245, 200, 66, 0.25);
+      border-radius: 10px;
       padding: 4rem;
       text-align: center;
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       position: relative;
       overflow: hidden;
     }
@@ -611,23 +740,35 @@
       content: '';
       position: absolute;
       top: 0;
-      left: 20%;
-      right: 20%;
+      left: 15%;
+      right: 15%;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
+    .payment-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 30%;
+      right: 30%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(77, 168, 255, 0.4), transparent);
+    }
+
     .payment-title {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 300;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
     }
 
     .payment-desc {
       font-size: 0.9rem;
       color: var(--muted);
-      margin-bottom: 2rem;
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
     }
 
     .price-wrap {
@@ -635,7 +776,7 @@
       align-items: baseline;
       justify-content: center;
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 0.8rem;
     }
 
     .price-strike {
@@ -647,13 +788,49 @@
 
     .price-highlight {
       font-family: var(--font-display);
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 600;
       color: var(--gold);
+      text-shadow: 0 0 30px rgba(245, 200, 66, 0.3);
+    }
+
+    /* Upgrade 2 — Membership Badge */
+    .membership-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 200, 66, 0.06);
+      border: 1px solid rgba(245, 200, 66, 0.28);
+      border-radius: 20px;
+      padding: 0.35rem 0.9rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-icon {
+      font-size: 0.85rem;
+    }
+
+    .badge-text {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: rgba(245, 200, 66, 0.85);
+      line-height: 1.4;
+    }
+
+    .badge-text strong {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .badge-sep {
+      color: rgba(255, 255, 255, 0.15);
+      font-size: 0.7rem;
     }
 
     .payment-btn {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
     }
 
     .trust-badges {
@@ -839,6 +1016,156 @@
       transform: none;
     }
 
+    /* ── CERTIFICATE TEASER (Upgrade 4) ── */
+    .cert-teaser-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      cursor: default;
+    }
+
+    .cert-preview-card {
+      position: relative;
+      width: 72px;
+      height: 52px;
+      background: linear-gradient(135deg, #f5f0e8 0%, #ede5d5 60%, #e8dcc8 100%);
+      border-radius: 4px;
+      border: 1px solid rgba(245, 200, 66, 0.5);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 200, 66, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .cert-teaser-wrap:hover .cert-preview-card {
+      transform: translateY(-2px) rotate(-1deg);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(245, 200, 66, 0.2);
+    }
+
+    .cert-preview-card::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(196, 154, 31, 0.4);
+      border-radius: 2px;
+    }
+
+    .cert-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px;
+    }
+
+    .cert-star {
+      font-size: 0.65rem;
+      color: #c49a1f;
+      letter-spacing: 2px;
+    }
+
+    .cert-line {
+      background: rgba(196, 154, 31, 0.5);
+      border-radius: 1px;
+    }
+
+    .cert-line-long {
+      width: 40px;
+      height: 1.5px;
+    }
+
+    .cert-line-short {
+      width: 26px;
+      height: 1.5px;
+    }
+
+    .cert-line-med {
+      width: 32px;
+      height: 1.5px;
+    }
+
+    .cert-seal {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f5c842 0%, #c49a1f 100%);
+      box-shadow: 0 0 4px rgba(245, 200, 66, 0.5);
+      margin-top: 2px;
+    }
+
+    .cert-teaser-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .cert-teaser-label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .cert-teaser-sub {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── MOBILE PERFORMANCE MODE (Upgrade 5) ── */
+    #mobile-fallback-bg {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 70% 50%, rgba(77, 168, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 60%, rgba(245, 200, 66, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #040812 0%, #080f1e 50%, #040c1a 100%);
+      overflow: hidden;
+    }
+
+    #mobile-fallback-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 15%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 45%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 70%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 55% 75%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 35% 85%, rgba(77, 168, 255, 0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 10%, rgba(245, 200, 66, 0.5) 0%, transparent 100%);
+    }
+
+    .mobile-planet-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Section reveal — smoother */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       .site-header {
@@ -872,7 +1199,8 @@
       }
 
       .sp-inner {
-        gap: 2rem;
+        gap: 1.5rem;
+        flex-wrap: wrap;
       }
 
       .payment-card {
@@ -886,6 +1214,21 @@
       .sp-item:not(:last-child)::after {
         display: none;
       }
+
+      .cert-teaser-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .membership-badge {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.25rem;
+      }
+
+      .badge-sep {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -895,7 +1238,7 @@
   <!-- HEADER -->
   <header class="site-header">
     <a href="https://www.iarrd.in" class="logo-area">
-      <img src="logo3.png" alt="IARRD Logo" style="height: 35px; width: auto; object-fit: contain;">
+      <img src="logo/logo3.png" alt="IARRD Logo" style="height: 35px; width: auto; object-fit: contain;">
     </a>
     <nav class="site-nav">
       <button id="sound-toggle" class="sound-toggle">🔇 Sound</button>
@@ -908,6 +1251,8 @@
   <!-- HERO -->
   <main class="hero">
     <canvas id="solar-canvas"></canvas>
+    <!-- Mobile performance fallback (Upgrade 5) -->
+    <div id="mobile-fallback-bg"></div>
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -916,9 +1261,9 @@
       <p class="subtitle-en">Beyond the Event Horizon</p>
       <p class="tagline">Join IARRD for an elite masterclass exploring black holes, relativity, time travel, multiverse
         theories, and deep-space physics — entirely in Tamil.</p>
-      <a href="form.html" class="cta-btn">
-        Claim Your Seat — ₹99 <span class="cta-arrow">→</span>
-      </a>
+      <button class="cta-btn" id="pay-btn-hero" onclick="window.location.href='form.html'">
+        Claim Your Seat &nbsp;·&nbsp; <span class="cta-btn-price">₹99</span> <span class="cta-arrow">→</span>
+      </button>
 
       <div class="countdown-wrap">
         <div class="countdown-box"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Days</span></div>
@@ -937,9 +1282,27 @@
     <div class="sp-inner">
       <div class="sp-item"><span class="sp-num">150+</span><span class="sp-label">Explorers Joined</span></div>
       <div class="sp-item"><span class="sp-num">4.8/5</span><span class="sp-label">Session Rating</span></div>
-      <div class="sp-item"><span class="sp-num">70+</span><span class="sp-label">Certificates Issued</span></div>
-      <div class="sp-item sp-powered"><span class="sp-label">Powered by</span><img src="logo3.png" alt="IARRD Logo"
-          style="height: 25px; object-fit: contain; margin-top: 5px;"></div>
+      <!-- Upgrade 4: Certificate Teaser -->
+      <div class="sp-item">
+        <div class="cert-teaser-wrap">
+          <div class="cert-preview-card">
+            <div class="cert-inner">
+              <div class="cert-star">★★★</div>
+              <div class="cert-line cert-line-long"></div>
+              <div class="cert-line cert-line-short"></div>
+              <div class="cert-line cert-line-med"></div>
+              <div class="cert-seal"></div>
+            </div>
+          </div>
+          <div class="cert-teaser-info">
+            <span class="sp-num" style="font-size:2.4rem;margin-bottom:0;">70+</span>
+            <span class="sp-label">Certificates Issued</span>
+            <span class="cert-teaser-label">ISO · MSME Certified</span>
+          </div>
+        </div>
+      </div>
+      <div class="sp-item sp-powered"><span class="sp-label">Powered by</span><img src="logo/logo4-removebg-preview.png"
+          alt="IARRD Logo" style="height: 25px; object-fit: contain; margin-top: 5px;"></div>
     </div>
   </div>
 
@@ -955,7 +1318,7 @@
           <h3 class="file-title">Time Travel &amp; Relativity</h3>
           <p class="file-desc">Unraveling the fabric of space-time, understanding length contraction, and exploring
             theoretical models of traversing through time.</p>
-          <div class="file-footer"><span class="file-icon">⏳</span><span class="file-tag">THEORETICAL PHYSICS</span>
+          <div class="file-footer"><span class="file-icon"></span><span class="file-tag">THEORETICAL PHYSICS</span>
           </div>
         </div>
         <div class="mission-file-card reveal">
@@ -964,7 +1327,7 @@
           <h3 class="file-title">The Multiverse Theory</h3>
           <p class="file-desc">Delving into parallel realities, quantum superposition, and the infinite possibilities
             beyond our observable universe.</p>
-          <div class="file-footer"><span class="file-icon">🌌</span><span class="file-tag">QUANTUM MECHANICS</span>
+          <div class="file-footer"><span class="file-icon"></span><span class="file-tag">QUANTUM MECHANICS</span>
           </div>
         </div>
         <div class="mission-file-card reveal">
@@ -972,7 +1335,7 @@
           <h3 class="file-title">Orbital Mechanics</h3>
           <p class="file-desc">The governing laws of celestial bodies, spacecraft trajectories, and navigating the harsh
             realities of deep space.</p>
-          <div class="file-footer"><span class="file-icon">🛰️</span><span class="file-tag">AEROSPACE ENGINEERING</span>
+          <div class="file-footer"><span class="file-icon"></span><span class="file-tag">AEROSPACE ENGINEERING</span>
           </div>
         </div>
       </div>
@@ -989,28 +1352,67 @@
       <h3 class="team-category-title" style="margin-top: 2rem;">Leadership</h3>
       <div class="crew-grid">
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="harish.jpeg" alt=""></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/harish.jpeg" alt="Harish Ragavendra Srinivasan">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/harish-ragavendra-srinivasan/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Harish Ragavendra Srinivasan</h4>
           <p class="crew-role">Founder &amp; CEO / Acting Defence Team Lead</p>
           <p class="crew-spec">Founder of IARRD leading multidisciplinary research programs across space systems,
             defense technologies, marine monitoring platforms, and indigenous engineering initiatives.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="tamil.jpeg" alt="Tamizh Amuthan"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/tamil.jpeg" alt="Tamizh Amuthan">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/tamizh-amuthan-r-926450297/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Tamizh Amuthan</h4>
           <p class="crew-role">Chief Strategic Officer &amp; Astronomy Team Lead</p>
           <p class="crew-spec">Leads astronomy research activities including observational workflows, constellation
             tracking concepts, and development of ground-support infrastructure for future space missions.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="Keerti.jpeg" alt="Keerthi Sai A S"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/keerti.jpeg" alt="Keerthi Sai A S">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/keerthisaias/" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Keerthi Sai A S</h4>
           <p class="crew-role">Chief Technology Officer &amp; R&amp;D Team Lead</p>
           <p class="crew-spec">Coordinates technical development across engineering teams supporting AI-enabled systems,
             mission architecture planning, and interdisciplinary innovation programs.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="gowtham.jpeg" alt="Goutham GV"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/gowtham.jpeg" alt="Goutham GV">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/goutham-gv-603482397/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Goutham GV</h4>
           <p class="crew-role">Chief Financial Officer &amp; Fundraising Lead</p>
           <p class="crew-spec">Oversees financial strategy, funding coordination, and long-term sustainability planning
@@ -1021,28 +1423,67 @@
       <h3 class="team-category-title">Domain Team Leads</h3>
       <div class="crew-grid">
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="shravathi.jpeg" alt="Shravanthi Shyamsundar"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/shravathi.jpeg" alt="Shravanthi Shyamsundar">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/iarrdofficial" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Shravanthi Shyamsundar</h4>
           <p class="crew-role">Satellite Research Team Lead</p>
           <p class="crew-spec">Leads CubeSat architecture planning and subsystem development activities supporting the
             PrithviSat mission platform.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="santosh.jpeg" alt="Santhosh Kumar B"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/santosh.jpeg" alt="Santhosh Kumar B">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/santhosh-kumar-b-a092662a6/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Santhosh Kumar B</h4>
           <p class="crew-role">Marine Research Team Lead</p>
           <p class="crew-spec">Coordinates marine technology research initiatives supporting coastal monitoring concepts
             and maritime awareness platforms.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="ayaz.jpeg" alt="Mohammed Ayaz"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/ayaz.jpeg" alt="Mohammed Ayaz">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/mohammed-ayaz-profile/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Mohammed Ayaz</h4>
           <p class="crew-role">Software Development Team Lead</p>
           <p class="crew-spec">Leads development of edutech platforms, simulation tools, and internal engineering
             software supporting IARRD programs.</p>
         </div>
         <div class="crew-card reveal">
-          <div class="crew-avatar"><img src="gnanesh.jpeg" alt="Gnanesh AS"></div>
+          <div class="crew-avatar-wrap">
+            <img src="team/gnanesh.jpeg" alt="Gnanesh AS">
+            <a class="crew-linkedin" href="https://www.linkedin.com/in/gnanesh-a-s-270715326/" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
           <h4 class="crew-name">Gnanesh AS</h4>
           <p class="crew-role">Social Media Management Team Lead</p>
           <p class="crew-spec">Leads outreach strategy, technical awareness initiatives, and community engagement
@@ -1086,7 +1527,17 @@
         <h2 class="payment-title">Secure Your Seat</h2>
         <p class="payment-desc">Join the elite masterclass. Limited spots available.</p>
         <div class="price-wrap"><span class="price-strike">₹499</span><span class="price-highlight">₹99</span></div>
-        <a href="form.html" class="cta-btn payment-btn">Reserve Your Access <span class="cta-arrow">→</span></a>
+        <!-- Upgrade 2: Membership Badge -->
+        <div class="membership-badge">
+          <span class="badge-icon">🏅</span>
+          <span class="badge-text"><strong>Free</strong> for IARRD Gold Members</span>
+          <span class="badge-sep">|</span>
+          <span class="badge-text"><strong>₹99</strong> for General Public</span>
+        </div>
+        <!-- Upgrade 1: Premium Payment CTA -->
+        <button class="cta-btn payment-btn" id="pay-btn-main" onclick="window.location.href='form.html'">
+          Reserve Your Access &nbsp;·&nbsp; <span class="cta-btn-price">₹99</span> <span class="cta-arrow">→</span>
+        </button>
         <div class="trust-badges"><span>🔒 Secure UPI</span><span>⚡ Instant Confirmation</span><span>📜 ISO/MSME
             Certified</span></div>
       </div>
@@ -1841,6 +2292,144 @@
     document.getElementById('sound-toggle').addEventListener('click', function () {
       this.textContent = this.textContent.includes('🔇') ? '🔊 Sound On' : '🔇 Sound';
     });
+  </script>
+
+  <!-- Razorpay SDK (Upgrade 1) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    // ═══════════════════════════════════════════
+    //  UPGRADE 1 — ONE-CLICK RAZORPAY PAYMENT
+    // ═══════════════════════════════════════════
+    function openRazorpay() {
+      // If Razorpay SDK failed to load, fallback to form
+      if (typeof Razorpay === 'undefined') {
+        window.location.href = 'form.html';
+        return;
+      }
+
+      const options = {
+        // ⚠️ Replace with your actual Razorpay Key ID
+        key: 'rzp_test_REPLACE_WITH_YOUR_KEY',
+        amount: 9900, // ₹99 in paise
+        currency: 'INR',
+        name: 'IARRD',
+        description: 'விண்வெளியில் ஒரு பயணம் 2.0 — Workshop Access',
+        image: 'logo/logo3.png',
+        theme: {
+          color: '#f5c842',
+          backdrop_color: '#040812',
+        },
+        modal: {
+          backdropclose: false,
+          escape: true,
+          animation: true,
+        },
+        prefill: {},
+        handler: function (response) {
+          // Payment successful — redirect to success/form
+          window.location.href = 'success.html?payment_id=' + response.razorpay_payment_id;
+        },
+        'modal.ondismiss': function () { /* user closed */ },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        console.error('Payment failed:', response.error);
+      });
+      rzp.open();
+    }
+
+    // ═══════════════════════════════════════════
+    //  UPGRADE 5 — MOBILE PERFORMANCE MODE
+    //  Measures FPS, disables Three.js on slow
+    //  devices, activates CSS-only space fallback
+    // ═══════════════════════════════════════════
+    (function mobilePerformanceMode() {
+      const canvas = document.getElementById('solar-canvas');
+      const fallback = document.getElementById('mobile-fallback-bg');
+      if (!canvas || !fallback) return;
+
+      const isMobile = window.innerWidth < 768;
+      const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 3;
+      const isSlowConnection = navigator.connection &&
+        ['slow-2g', '2g'].includes(navigator.connection.effectiveType);
+
+      // On small screens, run a quick FPS probe
+      if (isMobile) {
+        let frameCount = 0;
+        let startTime = null;
+
+        function probe(timestamp) {
+          if (!startTime) startTime = timestamp;
+          frameCount++;
+          const elapsed = timestamp - startTime;
+
+          if (elapsed < 800) {
+            requestAnimationFrame(probe);
+          } else {
+            const fps = (frameCount / elapsed) * 1000;
+            const isLowEnd = fps < 28 || isLowMemory || isSlowConnection;
+
+            if (isLowEnd) {
+              activateFallback();
+            } else {
+              // Still reduce particle count for mid-range
+              reduceMobileQuality();
+            }
+          }
+        }
+        requestAnimationFrame(probe);
+      }
+
+      function activateFallback() {
+        // Hide Three.js canvas
+        canvas.style.display = 'none';
+
+        // Show CSS fallback
+        fallback.style.display = 'block';
+
+        // Build lightweight planet glows
+        const glows = [
+          { size: 180, x: 72, y: 48, color: 'rgba(245,200,66,0.12)', blur: 60 },   // sun
+          { size: 90, x: 55, y: 60, color: 'rgba(77,168,255,0.1)', blur: 40 },   // earth
+          { size: 60, x: 80, y: 30, color: 'rgba(200,160,100,0.08)', blur: 30 },   // saturn
+        ];
+
+        glows.forEach(g => {
+          const div = document.createElement('div');
+          div.className = 'mobile-planet-glow';
+          div.style.cssText = `
+            width:${g.size}px; height:${g.size}px;
+            left:${g.x}%; top:${g.y}%;
+            transform:translate(-50%,-50%);
+            background:radial-gradient(circle, ${g.color} 0%, transparent 70%);
+            filter:blur(${g.blur}px);
+          `;
+          fallback.appendChild(div);
+        });
+
+        // Lightweight parallax on scroll
+        const heroContent = document.querySelector('.hero-content');
+        window.addEventListener('scroll', () => {
+          const scrollY = window.scrollY;
+          if (heroContent) {
+            heroContent.style.transform = `translateY(${scrollY * 0.25}px)`;
+          }
+          fallback.querySelectorAll('.mobile-planet-glow').forEach((g, i) => {
+            const speed = 0.05 + i * 0.03;
+            g.style.transform = `translate(-50%, calc(-50% + ${scrollY * speed}px))`;
+          });
+        }, { passive: true });
+      }
+
+      function reduceMobileQuality() {
+        // Three.js is running — reduce pixel ratio further
+        // (canvas already initialised with isMobile checks in Three.js block)
+        // Reduce particles.js count if active
+        const pContainer = document.getElementById('particles-js');
+        if (pContainer) pContainer.style.opacity = '0.5';
+      }
+    })();
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
