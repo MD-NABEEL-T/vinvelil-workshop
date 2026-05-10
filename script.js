@@ -57,130 +57,284 @@ const ADMIN_PASSWORD = "iarrdadmin2026";
 })();
 
 /* ═══════════════════════════════════════
-   REALISTIC THREE.JS EARTH (landing page)
+   CINEMATIC BLACK HOLE (landing page)
 ═══════════════════════════════════════ */
-(function initEarth3D() {
-  const container = document.getElementById("earth-3d");
+/* ═══════════════════════════════════════
+   CINEMATIC SOLAR SYSTEM (landing page)
+═══════════════════════════════════════ */
+(function initSolarSystem3D() {
+  const container = document.getElementById("solar-system-3d");
   if (!container || typeof THREE === "undefined") return;
 
-  const size = Math.min(container.parentElement.offsetWidth || 560, 560);
-  const W = size, H = size;
+  const W = window.innerWidth;
+  const H = window.innerHeight;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setSize(W, H);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
 
+  let composer;
+  const renderScene = typeof THREE.RenderPass !== "undefined" ? new THREE.RenderPass(new THREE.Scene(), new THREE.Camera()) : null;
+
   window.addEventListener("resize", () => {
-    const s = Math.min(container.parentElement.offsetWidth || 560, 560);
-    renderer.setSize(s, s);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    if(composer) composer.setSize(window.innerWidth, window.innerHeight);
   });
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
-  camera.position.set(0, 0, 2.55);
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
+  camera.position.set(0, 5, 25);
+  camera.lookAt(0, 0, 0);
+  
+  if (renderScene) {
+    renderScene.scene = scene;
+    renderScene.camera = camera;
+  }
 
-  const loader = new THREE.TextureLoader();
-  loader.crossOrigin = "anonymous";
-  const BASE = "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/";
+  // Texture Loader
+  const textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = "Anonymous";
+  
+  // Create generic noise texture for planets if CDN fails
+  const createNoiseTex = (color1, color2) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    for(let i=0; i<512; i+=4) {
+      for(let j=0; j<512; j+=4) {
+        ctx.fillStyle = Math.random() > 0.5 ? color1 : color2;
+        ctx.fillRect(i, j, 4, 4);
+      }
+    }
+    return new THREE.CanvasTexture(canvas);
+  };
 
-  const earthGeo = new THREE.SphereGeometry(1, 72, 72);
-  const earthMat = new THREE.MeshPhongMaterial({
-    map: loader.load(BASE + "earth_atmos_2048.jpg"),
-    bumpMap: loader.load(BASE + "earth_normal_2048.jpg"),
-    bumpScale: 0.05,
-    specularMap: loader.load(BASE + "earth_specular_2048.jpg"),
-    specular: new THREE.Color(0x1a3050),
-    shininess: 20,
+  // LIGHTING
+  const ambientLight = new THREE.AmbientLight(0x0a1525, 0.2); // deep space dark blue
+  scene.add(ambientLight);
+
+  const sunLight = new THREE.PointLight(0xffeedd, 3.5, 300);
+  sunLight.position.set(-15, 0, -10); // Sun on the left
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 2048;
+  sunLight.shadow.mapSize.height = 2048;
+  sunLight.shadow.bias = -0.001;
+  scene.add(sunLight);
+
+  const systemGroup = new THREE.Group();
+  scene.add(systemGroup);
+
+  // 1. SUN (Left Side)
+  const sunGeo = new THREE.SphereGeometry(8, 64, 64);
+  
+  const sunShaderMat = new THREE.ShaderMaterial({
+    uniforms: { time: { value: 0 } },
+    vertexShader: `
+      varying vec2 vUv;
+      varying vec3 vPos;
+      void main() {
+        vUv = uv; vPos = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+      varying vec3 vPos;
+      float hash(vec3 p) { return fract(sin(dot(p, vec3(12.9898, 78.233, 45.164))) * 43758.5453); }
+      float noise(vec3 x) {
+        vec3 p = floor(x); vec3 f = fract(x);
+        f = f*f*(3.0-2.0*f);
+        return mix(mix(mix(hash(p+vec3(0,0,0)), hash(p+vec3(1,0,0)),f.x),
+                       mix(hash(p+vec3(0,1,0)), hash(p+vec3(1,1,0)),f.x),f.y),
+                   mix(mix(hash(p+vec3(0,0,1)), hash(p+vec3(1,0,1)),f.x),
+                       mix(hash(p+vec3(0,1,1)), hash(p+vec3(1,1,1)),f.x),f.y),f.z);
+      }
+      void main() {
+        float n = noise(vPos * 0.8 + time * 0.2);
+        n += 0.5 * noise(vPos * 2.0 - time * 0.5);
+        vec3 color = mix(vec3(0.9, 0.3, 0.0), vec3(1.0, 0.9, 0.6), n);
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `
+  });
+  const sun = new THREE.Mesh(sunGeo, sunShaderMat);
+  sun.position.copy(sunLight.position);
+  systemGroup.add(sun);
+
+  const haloGeo = new THREE.SphereGeometry(8.5, 32, 32);
+  const haloMat = new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending, side: THREE.BackSide });
+  const sunHalo = new THREE.Mesh(haloGeo, haloMat);
+  sun.add(sunHalo);
+
+  // 2. EARTH (Center)
+  const earthGeo = new THREE.SphereGeometry(2, 64, 64);
+  const earthMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg', undefined, undefined, () => {
+      earthMat.map = createNoiseTex('rgba(10,50,150,1)', 'rgba(20,100,50,1)');
+      earthMat.needsUpdate = true;
+    }),
+    roughness: 0.7,
+    metalness: 0.1
   });
   const earth = new THREE.Mesh(earthGeo, earthMat);
-  scene.add(earth);
+  earth.position.set(4, -1, -2);
+  earth.castShadow = true;
+  earth.receiveShadow = true;
+  systemGroup.add(earth);
 
-  const cloudMat = new THREE.MeshPhongMaterial({
-    map: loader.load(BASE + "earth_clouds_2048.png"),
+  const atmosGeo = new THREE.SphereGeometry(2.05, 32, 32);
+  const atmosMat = new THREE.MeshBasicMaterial({ color: 0x4488ff, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, side: THREE.BackSide });
+  const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
+  earth.add(atmosphere);
+
+  // 3. SATURN (Top Right)
+  const saturnGeo = new THREE.SphereGeometry(3.5, 64, 64);
+  const createSaturnTex = () => {
+    const c = document.createElement('canvas'); c.width = 1; c.height = 128;
+    const ctx = c.getContext('2d');
+    const grad = ctx.createLinearGradient(0,0,0,128);
+    grad.addColorStop(0, '#dcb588'); grad.addColorStop(0.2, '#c4996b'); grad.addColorStop(0.4, '#e3caa0');
+    grad.addColorStop(0.6, '#b78c62'); grad.addColorStop(0.8, '#e3caa0'); grad.addColorStop(1, '#dcb588');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,1,128);
+    return new THREE.CanvasTexture(c);
+  };
+  const saturnMat = new THREE.MeshStandardMaterial({ map: createSaturnTex(), roughness: 0.8 });
+  const saturn = new THREE.Mesh(saturnGeo, saturnMat);
+  saturn.position.set(22, 6, -15);
+  saturn.castShadow = true;
+  saturn.receiveShadow = true;
+  systemGroup.add(saturn);
+
+  // Saturn Rings
+  const ringGeo = new THREE.RingGeometry(4.5, 8.5, 128);
+  const createRingTex = () => {
+    const c = document.createElement('canvas'); c.width = 256; c.height = 1;
+    const ctx = c.getContext('2d');
+    const grad = ctx.createLinearGradient(0,0,256,0);
+    grad.addColorStop(0, 'rgba(200,180,150,0)');
+    grad.addColorStop(0.1, 'rgba(200,180,150,0.8)');
+    grad.addColorStop(0.3, 'rgba(220,200,180,0.9)');
+    grad.addColorStop(0.35, 'rgba(0,0,0,0)'); 
+    grad.addColorStop(0.4, 'rgba(180,160,130,0.7)');
+    grad.addColorStop(0.8, 'rgba(160,140,110,0.5)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,256,1);
+    return new THREE.CanvasTexture(c);
+  };
+  
+  const ringMat = new THREE.MeshStandardMaterial({
+    map: createRingTex(),
+    color: 0xffffff,
     transparent: true,
-    opacity: 0.82,
-    depthWrite: false,
+    opacity: 0.9,
+    side: THREE.DoubleSide,
+    roughness: 0.8
   });
-  const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.009, 72, 72), cloudMat);
-  scene.add(clouds);
+  
+  const pos = ringGeo.attributes.position;
+  const uvs = ringGeo.attributes.uv;
+  for(let i=0; i<pos.count; i++) {
+    const r = Math.sqrt(pos.x[i]*pos.x[i] + pos.y[i]*pos.y[i]);
+    uvs.setXY(i, (r - 4.5) / (8.5 - 4.5), 0.5);
+  }
+  
+  const rings = new THREE.Mesh(ringGeo, ringMat);
+  rings.rotation.x = Math.PI / 2 + 0.2;
+  rings.rotation.y = 0.1;
+  rings.receiveShadow = true;
+  rings.castShadow = true;
+  saturn.add(rings);
 
-  const nightTex = loader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/earth_atmos_2048.jpg",
-  );
-  const nightLoader = new THREE.TextureLoader();
-  nightLoader.crossOrigin = "anonymous";
-  const nightMat = new THREE.MeshBasicMaterial({
-    transparent: true,
-    opacity: 0,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  });
-  nightLoader.load(
-    "https://raw.githubusercontent.com/turban/webgl-earth/master/images/5_night_8k.jpg",
-    (tex) => { nightMat.map = tex; nightMat.needsUpdate = true; },
-    undefined,
-    () => {
-      nightMat.color = new THREE.Color(0xffcc44);
-      nightMat.needsUpdate = true;
-    }
-  );
-  const nightMesh = new THREE.Mesh(new THREE.SphereGeometry(1.002, 72, 72), nightMat);
-  scene.add(nightMesh);
+  // 4. MARS
+  const marsGeo = new THREE.SphereGeometry(0.8, 32, 32);
+  const marsMat = new THREE.MeshStandardMaterial({ color: 0x993322, roughness: 0.9 });
+  const mars = new THREE.Mesh(marsGeo, marsMat);
+  mars.position.set(-5, -6, 8);
+  mars.receiveShadow = true;
+  mars.castShadow = true;
+  systemGroup.add(mars);
 
-  const atmoMat = new THREE.MeshPhongMaterial({
-    color: 0x1177ff,
-    transparent: true,
-    opacity: 0.13,
-    depthWrite: false,
-    side: THREE.BackSide,
-  });
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.055, 64, 64), atmoMat));
+  // 5. ASTEROID DUST
+  const dustGeo = new THREE.BufferGeometry();
+  const dustCount = 1500;
+  const dustPos = new Float32Array(dustCount * 3);
+  for(let i=0; i<dustCount; i++) {
+    dustPos[i*3] = (Math.random() - 0.5) * 100;
+    dustPos[i*3+1] = (Math.random() - 0.5) * 40;
+    dustPos[i*3+2] = (Math.random() - 0.5) * 80 - 10;
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+  const dustMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.05, transparent: true, opacity: 0.4 });
+  const dust = new THREE.Points(dustGeo, dustMat);
+  scene.add(dust);
 
-  const outerMat = new THREE.MeshPhongMaterial({
-    color: 0x0044cc,
-    transparent: true,
-    opacity: 0.055,
-    depthWrite: false,
-    side: THREE.BackSide,
-  });
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.13, 64, 64), outerMat));
+  // 6. POST PROCESSING (Subtle Bloom)
+  if (typeof THREE.EffectComposer !== "undefined" && typeof THREE.UnrealBloomPass !== "undefined") {
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(renderScene);
+    const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(W, H), 0.4, 0.5, 0.8);
+    bloomPass.threshold = 0.5; 
+    bloomPass.strength = 0.8;
+    bloomPass.radius = 0.6;
+    composer.addPass(bloomPass);
+  }
 
-  const sun = new THREE.DirectionalLight(0xfff5e0, 2.8);
-  sun.position.set(4.0, 2.2, 2.5);
-  scene.add(sun);
+  systemGroup.rotation.x = 0.1;
+  systemGroup.rotation.y = 0.05;
 
-  const sunRim = new THREE.DirectionalLight(0xffeedd, 0.6);
-  sunRim.position.set(4.5, 2.8, 1.5);
-  scene.add(sunRim);
-
-  scene.add(new THREE.AmbientLight(0x04080f, 1.5));
-
-  const TILT = THREE.MathUtils.degToRad(23.5);
-  [earth, clouds, nightMesh].forEach(m => m.rotation.z = TILT);
-
-  earth.rotation.y = THREE.MathUtils.degToRad(35);
-  nightMesh.rotation.y = earth.rotation.y;
-  clouds.rotation.y = earth.rotation.y + 0.08;
-
-  const EARTH_RPM = 0.00075;
-  const CLOUD_RPM = 0.00115;
+  // 7. ANIMATION LOOP
+  let time = 0;
+  const clock = new THREE.Clock();
 
   function animate() {
     requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    time += delta;
 
-    earth.rotation.y += EARTH_RPM;
-    clouds.rotation.y += CLOUD_RPM;
-    nightMesh.rotation.y = earth.rotation.y;
+    sunShaderMat.uniforms.time.value = time;
 
-    const angle = earth.rotation.y;
-    const nightIntensity = Math.max(0, -Math.cos(angle + 0.6));
-    nightMat.opacity = nightIntensity * 0.65;
+    earth.rotation.y += 0.002;
+    saturn.rotation.y += 0.001;
+    mars.rotation.y += 0.003;
 
-    renderer.render(scene, camera);
+    earth.position.x = 4 + Math.sin(time * 0.05) * 0.5;
+    earth.position.z = -2 + Math.cos(time * 0.05) * 0.5;
+    
+    saturn.position.x = 22 + Math.sin(time * 0.02 + 1) * 1.0;
+    saturn.position.z = -15 + Math.cos(time * 0.02 + 1) * 1.0;
+
+    dust.rotation.y = time * 0.005;
+
+    const scrollY = window.scrollY;
+    camera.position.x = Math.sin(time * 0.1) * 0.5;
+    
+    // For mobile (portrait), we might want to push the camera back a bit to see the sun on the left and earth in the center
+    const isMobile = window.innerWidth < 768;
+    const zOffset = isMobile ? 35 : 25;
+    const yOffset = isMobile ? 8 : 5;
+    
+    camera.position.y = yOffset + Math.cos(time * 0.08) * 0.3 - scrollY * 0.005;
+    camera.position.z = zOffset - scrollY * 0.01;
+    
+    // Adjust lookAt slightly based on mobile
+    camera.lookAt(isMobile ? 2 : 0, 0, 0);
+
+    if (composer) {
+      composer.render();
+    } else {
+      renderer.render(scene, camera);
+    }
   }
+
   animate();
 })();
 
@@ -194,7 +348,28 @@ if (document.querySelector(".page-landing")) {
     header.classList.toggle("scrolled", window.scrollY > 40);
   });
 
-  const TARGET = new Date("2026-05-02T18:00:00");
+  // Ambient sound logic
+  const soundBtn = document.getElementById("ambient-sound-toggle");
+  if(soundBtn) {
+    let audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=deep-space-110820.mp3");
+    audio.loop = true;
+    audio.volume = 0.3;
+    let isPlaying = false;
+    soundBtn.addEventListener("click", () => {
+      if(!isPlaying) {
+        audio.play().catch(e => console.log("Audio play prevented:", e));
+        soundBtn.classList.add("playing");
+        soundBtn.innerHTML = '<span class="sound-icon">🔊</span> Sound On';
+      } else {
+        audio.pause();
+        soundBtn.classList.remove("playing");
+        soundBtn.innerHTML = '<span class="sound-icon">🔈</span> Sound Off';
+      }
+      isPlaying = !isPlaying;
+    });
+  }
+
+  const TARGET = new Date("2026-05-17T18:00:00");
 
   function updateCountdown() {
     const now = new Date();
@@ -230,8 +405,8 @@ if (document.querySelector(".page-landing")) {
     });
   }, { root: null, rootMargin: "0px", threshold: 0.12 });
 
-  document.querySelectorAll(".topic-card.reveal, .contact-card.reveal").forEach((card, i) => {
-    card.style.transitionDelay = `${i * 0.08}s`;
+  document.querySelectorAll(".mission-file-card.reveal, .crew-card.reveal, .test-card.reveal, .payment-card.reveal, .contact-card.reveal").forEach((card, i) => {
+    card.style.transitionDelay = `${(i % 5) * 0.08}s`;
     revealObserver.observe(card);
   });
 }
