@@ -683,23 +683,21 @@ const options = {
 
       // STEP 4 — Save to Google Sheets
 // STEP 4 — Save to Google Sheets
-const sheetRes = await fetch(
-  GOOGLE_SCRIPT_URL,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"  // ← ADD THIS LINE
-    },
-    body: JSON.stringify({
-      ...submission,
-      paymentStatus: "PAID"
-    })
-  }
-);
+// STEP 4 — Save to Google Sheets
+await fetch(GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",  // ← KEY FIX for Google Apps Script
+  headers: {
+    "Content-Type": "text/plain"  // ← must be text/plain with no-cors
+  },
+  body: JSON.stringify({
+    ...submission,
+    paymentStatus: "PAID"
+  })
+});
 
-      if (!sheetRes.ok) {
-        throw new Error("Failed to save registration");
-      }
+// no-cors means we can't read the response, so just wait briefly
+await new Promise(res => setTimeout(res, 1500));
 
       // STEP 5 — Redirect
       window.location.href = "success.html";
