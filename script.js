@@ -622,19 +622,7 @@ if (document.querySelector(".page-form")) {
         timestamp: formData.timestamp,
       };
 
-      // Add this BEFORE the create-order fetch (around line 685)
-// Wake up Render backend first
-try {
-  await fetch(`${BACKEND_URL}/api/payment/create-order`, { method: "POST" });
-} catch(e) {}
-
-await new Promise(res => setTimeout(res, 3000)); // wait 3 seconds
-
-// STEP 1 — Create Razorpay Order (your existing code)
-const orderRes = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" }
-});
+  
       // STEP 1 — Create Razorpay Order
 const orderRes = await fetch(
   `${BACKEND_URL}/api/payment/create-order`,
