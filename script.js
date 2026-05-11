@@ -4,10 +4,11 @@
  *
  * ⚙️  CONFIGURE YOUR GOOGLE APPS SCRIPT URL HERE:
  */
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://vinvelil-workshop.onrender.com";
 
 // old url :"https://script.google.com/macros/s/AKfycbwwleBrM0mXl6RstdxeUnanh3VGOtrmiG9Szul6dGvN5WJRR0GYRS4IYOsKyNQtq96I/exec"
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyXbLR7egPx3VerVUI3kqB50kSl5WZajoz1ThGy1hU2WZNl3CT-pSHvOyx_koXHm8zGDg/exec";
+
 const ADMIN_PASSWORD = "iarrdadmin2026";
 
 /* ═══════════════════════════════════════
@@ -621,6 +622,19 @@ if (document.querySelector(".page-form")) {
         timestamp: formData.timestamp,
       };
 
+      // Add this BEFORE the create-order fetch (around line 685)
+// Wake up Render backend first
+try {
+  await fetch(`${BACKEND_URL}/api/payment/create-order`, { method: "POST" });
+} catch(e) {}
+
+await new Promise(res => setTimeout(res, 3000)); // wait 3 seconds
+
+// STEP 1 — Create Razorpay Order (your existing code)
+const orderRes = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" }
+});
       // STEP 1 — Create Razorpay Order
 const orderRes = await fetch(
   `${BACKEND_URL}/api/payment/create-order`,
@@ -680,16 +694,20 @@ const options = {
       }
 
       // STEP 4 — Save to Google Sheets
-      const sheetRes = await fetch(
-        GOOGLE_SCRIPT_URL,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            ...submission,
-            paymentStatus: "PAID"
-          })
-        }
-      );
+// STEP 4 — Save to Google Sheets
+const sheetRes = await fetch(
+  GOOGLE_SCRIPT_URL,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"  // ← ADD THIS LINE
+    },
+    body: JSON.stringify({
+      ...submission,
+      paymentStatus: "PAID"
+    })
+  }
+);
 
       if (!sheetRes.ok) {
         throw new Error("Failed to save registration");
