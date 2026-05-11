@@ -4,7 +4,10 @@
  *
  * ⚙️  CONFIGURE YOUR GOOGLE APPS SCRIPT URL HERE:
  */
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwleBrM0mXl6RstdxeUnanh3VGOtrmiG9Szul6dGvN5WJRR0GYRS4IYOsKyNQtq96I/exec";
+const BACKEND_URL = "http://localhost:5000";
+
+// old url :"https://script.google.com/macros/s/AKfycbwwleBrM0mXl6RstdxeUnanh3VGOtrmiG9Szul6dGvN5WJRR0GYRS4IYOsKyNQtq96I/exec"
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyXbLR7egPx3VerVUI3kqB50kSl5WZajoz1ThGy1hU2WZNl3CT-pSHvOyx_koXHm8zGDg/exec";
 const ADMIN_PASSWORD = "iarrdadmin2026";
 
 /* ═══════════════════════════════════════
@@ -618,12 +621,114 @@ if (document.querySelector(".page-form")) {
         timestamp: formData.timestamp,
       };
 
-      const res = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(submission),
-      });
-      if (!res.ok) throw new Error("Server error");
+      // STEP 1 — Create Razorpay Order
+const orderRes = await fetch(
+  `${BACKEND_URL}/api/payment/create-order`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+);
+
+const orderData = await orderRes.json();
+
+if (!orderData.success) {
+  throw new Error("Failed to create order");
+}
+
+// STEP 2 — Open Razorpay
+const options = {
+
+  key: orderData.key,
+
+  amount: orderData.order.amount,
+
+  currency: orderData.order.currency,
+
+  name: "IARRD Astronomy Workshop",
+
+  description: "Workshop Registration",
+
+  order_id: orderData.order.id,
+
+  theme: {
+    color: "#d4a853"
+  },
+
+  handler: async function (response) {
+
+    try {
+
+      // STEP 3 — Verify Payment
+      const verifyRes = await fetch(
+        `${BACKEND_URL}/api/payment/verify-payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(response)
+        }
+      );
+
+      const verifyData = await verifyRes.json();
+
+      if (!verifyData.success) {
+        throw new Error("Payment verification failed");
+      }
+
+      // STEP 4 — Save to Google Sheets
+      const sheetRes = await fetch(
+        GOOGLE_SCRIPT_URL,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...submission,
+            paymentStatus: "PAID"
+          })
+        }
+      );
+
+      if (!sheetRes.ok) {
+        throw new Error("Failed to save registration");
+      }
+
+      // STEP 5 — Redirect
       window.location.href = "success.html";
+
+    } catch (err) {
+
+      console.error(err);
+
+      spinner.style.display = "none";
+
+      submitBtn.style.display = "inline-flex";
+
+      errEl.style.display = "block";
+
+      errEl.textContent =
+        "Payment successful but registration failed.";
+
+    }
+
+  },
+
+  modal: {
+    ondismiss: function () {
+
+      spinner.style.display = "none";
+
+      submitBtn.style.display = "inline-flex";
+
+    }
+  }
+};
+
+const razorpay = new Razorpay(options);
+
+razorpay.open();
     } catch (e) {
       spinner.style.display = "none";
       submitBtn.style.display = "inline-flex";
