@@ -2295,49 +2295,97 @@
   </script>
 
   <!-- Razorpay SDK (Upgrade 1) -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+Analyze the entire project carefully and check the complete payment + registration workflow end-to-end.
+
+Project goals:
+
+* User fills registration form
+* Razorpay payment opens
+* Payment succeeds
+* Backend verifies payment signature
+* Registration data is saved to Google Sheets
+* User is redirected to success.html
+
+Tasks to perform:
+
+1. Check the frontend flow in:
+
+* index.html
+* script.js
+
+2. Check the backend flow in:
+
+* paymentController.js
+* routes
+* server.js/app.js
+
+3. Verify there is NO duplicate Razorpay code anywhere.
+   Search for:
+
+* openRazorpay
+* new Razorpay(
+* const options =
+* razorpay.open()
+
+If duplicate payment logic exists in index.html or elsewhere, identify it clearly.
+
+4. Verify the current architecture is correct:
+   Frontend:
+   submit button → create-order API → Razorpay popup
+
+Backend:
+create-order → Razorpay order creation
+verify-payment → signature verification
+
+5. Check whether:
+
+* BACKEND_URL is correct
+* API routes match frontend fetch URLs
+* CORS issues may happen
+* Render deployment URLs are correct
+* Google Apps Script no-cors flow is valid
+* success.html redirection works properly
+
+6. Check for possible bugs:
+
+* Multiple form submissions
+* Spinner not hiding
+* Payment popup not opening
+* Payment verification failures
+* Fetch errors
+* Async issues
+* Missing await
+* Undefined variables
+* Wrong environment variable usage
+* Razorpay key mismatch
+* Production vs test key conflicts
+
+7. Check whether amount handling is secure.
+   Ensure amount is controlled ONLY by backend and not editable from frontend.
+
+8. Check mobile compatibility:
+
+* UPI apps opening correctly
+* Razorpay popup behavior
+* Modal dismiss handling
+
+9. Suggest improvements for:
+
+* Error handling
+* Security
+* UX
+* Performance
+* Payment reliability
+
+10. Finally give:
+
+* A clear explanation of how the entire system currently works
+* Any detected issues
+* Exact fixes with file names and code snippets if needed
+
+Do NOT rewrite the whole project.
+Only analyze, debug, explain architecture, and suggest precise fixes.
   <script>
-    // ═══════════════════════════════════════════
-    //  UPGRADE 1 — ONE-CLICK RAZORPAY PAYMENT
-    // ═══════════════════════════════════════════
-    function openRazorpay() {
-      // If Razorpay SDK failed to load, fallback to form
-      if (typeof Razorpay === 'undefined') {
-        window.location.href = 'form.html';
-        return;
-      }
-
-      const options = {
-        // ⚠️ Replace with your actual Razorpay Key ID
-        key: 'rzp_live_So7JswBJ25Eow6',
-        amount: 100, // ₹99 in paise but now 1 rupee for testing
-        currency: 'INR',
-        name: 'IARRD',
-        description: 'விண்வெளியில் ஒரு பயணம் 2.0 — Workshop Access',
-        image: 'logo/logo3.png',
-        theme: {
-          color: '#f5c842',
-          backdrop_color: '#040812',
-        },
-        modal: {
-          backdropclose: false,
-          escape: true,
-          animation: true,
-        },
-        prefill: {},
-        handler: function (response) {
-          // Payment successful — redirect to success/form
-          window.location.href = 'success.html?payment_id=' + response.razorpay_payment_id;
-        },
-        'modal.ondismiss': function () { /* user closed */ },
-      };
-
-      const rzp = new Razorpay(options);
-      rzp.on('payment.failed', function (response) {
-        console.error('Payment failed:', response.error);
-      });
-      rzp.open();
-    }
 
     // ═══════════════════════════════════════════
     //  UPGRADE 5 — MOBILE PERFORMANCE MODE
