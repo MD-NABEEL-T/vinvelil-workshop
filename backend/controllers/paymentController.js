@@ -20,7 +20,7 @@ export const createOrder = async (req, res) => {
   try {
     // ✅ FIX: Changed from 1 * 100 to 99 * 100
     const options = {
-      amount: 1 * 100,  // ₹99.00 = 9900 paise
+      amount: 99 * 100,  // ₹99.00 = 9900 paise
       currency: "INR",
       receipt: `receipt_${Date.now()}`
     };
