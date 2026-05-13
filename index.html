@@ -2299,26 +2299,33 @@
   const audio = new Audio("audio/vinvelil-audio.mpeg");
   audio.loop = true;
   audio.volume = 0.4;
-  audio.muted = true;
+  let playing = false;
 
+  // Seek to 1 minute once audio is loaded
   audio.addEventListener("loadedmetadata", () => {
-    audio.currentTime = 60;
+    if (audio.duration > 60) {
+      audio.currentTime = 60;
+    }
   });
 
-  audio.play().catch(() => {});
   soundBtn.innerHTML = "🔇 Sound";
 
   soundBtn.addEventListener("click", () => {
-    if (audio.muted) {
-      audio.muted = false;
-      soundBtn.innerHTML = "🔊 Sound";
+    if (!playing) {
+      audio.play().then(() => {
+        playing = true;
+        soundBtn.innerHTML = "🔊 Sound";
+      }).catch(err => {
+        console.warn("Audio blocked:", err);
+      });
     } else {
-      audio.muted = true;
+      audio.pause();
+      playing = false;
       soundBtn.innerHTML = "🔇 Sound";
     }
   });
 })();
-    // ══════════════════════════════════════════
+// ══════════════════════════════════════════
   </script>
 
   <!-- Razorpay SDK (Upgrade 1) -->
