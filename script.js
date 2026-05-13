@@ -352,27 +352,6 @@ if (document.querySelector(".page-landing")) {
     header.classList.toggle("scrolled", window.scrollY > 40);
   });
 
-  // Ambient sound logic
-  const soundBtn = document.getElementById("ambient-sound-toggle");
-  if(soundBtn) {
-    let audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=deep-space-110820.mp3");
-    audio.loop = true;
-    audio.volume = 0.3;
-    let isPlaying = false;
-    soundBtn.addEventListener("click", () => {
-      if(!isPlaying) {
-        audio.play().catch(e => console.log("Audio play prevented:", e));
-        soundBtn.classList.add("playing");
-        soundBtn.innerHTML = '<span class="sound-icon">🔊</span> Sound On';
-      } else {
-        audio.pause();
-        soundBtn.classList.remove("playing");
-        soundBtn.innerHTML = '<span class="sound-icon">🔈</span> Sound Off';
-      }
-      isPlaying = !isPlaying;
-    });
-  }
-
   const TARGET = new Date("2026-05-17T18:00:00");
 
   function updateCountdown() {

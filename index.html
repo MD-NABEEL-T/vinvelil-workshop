@@ -1241,7 +1241,9 @@
       <img src="logo/logo3.png" alt="IARRD Logo" style="height: 35px; width: auto; object-fit: contain;">
     </a>
     <nav class="site-nav">
-      <button id="sound-toggle" class="sound-toggle">🔇 Sound</button>
+<button id="ambient-sound-toggle" class="sound-toggle">
+  🔊 Sound
+</button>
       <a href="#about">About</a>
       <a href="#team">Team</a>
       <a href="#contact">Contact</a>
@@ -2288,10 +2290,35 @@
 
     // ═══════════════════════════════════════════
     //  SOUND TOGGLE (placeholder)
-    // ═══════════════════════════════════════════
-    document.getElementById('sound-toggle').addEventListener('click', function () {
-      this.textContent = this.textContent.includes('🔇') ? '🔊 Sound On' : '🔇 Sound';
-    });
+    // ── SOUND TOGGLE ──
+// ── SOUND TOGGLE ──
+(function initSound() {
+  const soundBtn = document.getElementById("ambient-sound-toggle");
+  if (!soundBtn) return;
+
+  const audio = new Audio("audio/vinvelil-audio.mpeg");
+  audio.loop = true;
+  audio.volume = 0.4;
+  audio.muted = true;
+
+  audio.addEventListener("loadedmetadata", () => {
+    audio.currentTime = 60;
+  });
+
+  audio.play().catch(() => {});
+  soundBtn.innerHTML = "🔇 Sound";
+
+  soundBtn.addEventListener("click", () => {
+    if (audio.muted) {
+      audio.muted = false;
+      soundBtn.innerHTML = "🔊 Sound";
+    } else {
+      audio.muted = true;
+      soundBtn.innerHTML = "🔇 Sound";
+    }
+  });
+})();
+    // ══════════════════════════════════════════
   </script>
 
   <!-- Razorpay SDK (Upgrade 1) -->
